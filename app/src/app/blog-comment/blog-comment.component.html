@@ -1,0 +1,36 @@
+<form [formGroup]="formModel" *ngFor="let formModel of formModels.controls; let i=index">
+    <div class="row jumbotron m-3 p-3">
+        <div class="col-9">
+            <input formControlName="message" class="form-control">
+        </div>
+        <div class="col-3">
+            <div *ngIf="formModel.get('blogCommentId').value == 0;else templatElse">
+                <button (click)="onSubmit(formModel)" [disabled]="formModel.invalid" class="btn btn-success w-50"
+                    [class.d-none]="formModel.get('blogCommentId').value != 0">
+                    <i class="fas fa-share-square"></i>
+                </button>
+                <button (click)="formModels.removeAt(i)" class="btn btn-danger w-50"><i
+                        class="fas fa-trash-alt fa-fw"></i>
+                </button>
+
+            </div>
+            <ng-template #templatElse>
+                <button (click)="onUpdate(formModel)" [disabled]="formModel.invalid"
+                    [class.d-none]="formModel.get('blogCommentId').value == 0" class="btn btn-info w-50">
+                    <i class="fas fa-edit fa-fw"></i>
+                </button>
+                <button (click)="onDelete(formModel.get('blogCommentId').value, i)" class="btn btn-danger w-50"><i
+                        class="fas fa-trash-alt fa-fw"></i>
+                </button>
+            </ng-template>
+        </div>
+    </div>
+</form>
+
+<div class="jumbotron m-3 p-3">
+    <button (click)="onAdd()" type="button" class="btn btn-outline-success btn-block">
+        <i class="fas fa-plus"></i>
+    </button>
+</div>
+
+<div *ngFor="let formModel of formModels.controls" class="text-danger">{{formModel.value | json}}</div>
